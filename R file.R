@@ -46,7 +46,7 @@ pc2 <- filter(parcel_without_NA, parcel_status=="returned to warehouse" | parcel
 pc2 <- mutate(pc2, parcel_return_case=case_when(parcel_status== "returned to warehouse" & parcel_returned==0 ~"Returned before delivery", parcel_status== "returned to warehouse" & parcel_returned==1 ~"Returned by Customer" ,parcel_status== "lost" & parcel_returned==1 ~ "Lost During Return",parcel_status== "lost" & parcel_returned==0 ~"Lost During Delivery " ))
 
 #dividing price into segments 
-pv <- parcel_without_NA %>% mutate(values = case_when(parcel_value > 0 & parcel_value <= 10 ~ "0-10£",parcel_value > 10 & parcel_value <=20 ~ "10-20£",parcel_value > 20 & parcel_value <=30 ~ "20-30£",parcel_value > 30 & parcel_value <=40 ~ "30-40£",parcel_value > 40 & parcel_value <=50 ~ "40-50£",parcel_value > 50 & parcel_value <=60 ~ "50-60£",parcel_value > 60 & parcel_value <=70 ~ "60-70£",parcel_value > 70 & parcel_value <=80 ~ "70-80£",parcel_value > 80 & parcel_value <=90 ~ "80-90£",parcel_value > 90 & parcel_value <=100 ~ "90-100£", parcel_value > 100 & parcel_value <=110 ~ "100-110£", parcel_value > 110 & parcel_value <=120 ~ "110-120£", parcel_value > 120 & parcel_value <=130 ~ "120-130£", parcel_value > 130 & parcel_value <=140 ~ "130-140£", parcel_value > 140 & parcel_value <=150 ~ "140-150£", parcel_value > 150 & parcel_value <=160~ "150-160£", parcel_value > 160 & parcel_value <=170 ~ "160£-above"))
+pv <- parcel_without_NA %>% mutate(values = case_when(parcel_value > 0 & parcel_value <= 10 ~ "0-10Â£",parcel_value > 10 & parcel_value <=20 ~ "10-20Â£",parcel_value > 20 & parcel_value <=30 ~ "20-30Â£",parcel_value > 30 & parcel_value <=40 ~ "30-40Â£",parcel_value > 40 & parcel_value <=50 ~ "40-50Â£",parcel_value > 50 & parcel_value <=60 ~ "50-60Â£",parcel_value > 60 & parcel_value <=70 ~ "60-70Â£",parcel_value > 70 & parcel_value <=80 ~ "70-80Â£",parcel_value > 80 & parcel_value <=90 ~ "80-90Â£",parcel_value > 90 & parcel_value <=100 ~ "90-100Â£", parcel_value > 100 & parcel_value <=110 ~ "100-110Â£", parcel_value > 110 & parcel_value <=120 ~ "110-120Â£", parcel_value > 120 & parcel_value <=130 ~ "120-130Â£", parcel_value > 130 & parcel_value <=140 ~ "130-140Â£", parcel_value > 140 & parcel_value <=150 ~ "140-150Â£", parcel_value > 150 & parcel_value <=160~ "150-160Â£", parcel_value > 160 & parcel_value <=170 ~ "160Â£-above"))
 
 #transforming data type of driver_id variable to character variable
 parcel$driver_id<- as.character(parcel$driver_id)
@@ -62,13 +62,13 @@ p_d2 <- p_d %>% group_by(experience, work_pattern) %>% summarise(driver_dilvery_
 ggplot(parcel_without_NA, aes(x=parcel_value))+geom_histogram(bins=15, fill="#FF6347")+ theme( axis.title.y  = element_blank())+labs(title = "Parcel Value Distribution", x="Parcel Value") 
 
 #Graph 2 : Percentage of each parcel status
-g1 <- ggplot(ps, aes(x="",y = parcel_status_count, fill = parcel_status)) + geom_bar(stat = "identity", width =1, color = "white") + coord_polar("y", start = 0) +geom_text(aes(label=paste(labels, "\n","£" ,round(parcel_sum_value, 0))),position = position_stack(vjust=0.5)) + theme_void() + labs(title = "Percentage(%) Distribution Of Parcel Status")  + scale_fill_manual(values = c("#63c5da","#FFD300","#FF6347"), name="Parcel Status", labels=c("Delivered", "Lost", "Returned to Warehouse"))
+g1 <- ggplot(ps, aes(x="",y = parcel_status_count, fill = parcel_status)) + geom_bar(stat = "identity", width =1, color = "white") + coord_polar("y", start = 0) +geom_text(aes(label=paste(labels, "\n","Â£" ,round(parcel_sum_value, 0))),position = position_stack(vjust=0.5)) + theme_void() + labs(title = "Percentage(%) Distribution Of Parcel Status")  + scale_fill_manual(values = c("#63c5da","#FFD300","#FF6347"), name="Parcel Status", labels=c("Delivered", "Lost", "Returned to Warehouse"))
 
 # Graph 3: Location wise split of parcels status
 g2 <- ggplot(parcel_without_NA, aes(x=delivery_location, fill=parcel_status)) + geom_bar(position = "stack") + theme( axis.title.y  = element_blank()) + scale_fill_manual(values = c("#63c5da","#FFD300","#FF6347"), name="Parcel Status", labels=c("Delivered", "Lost", "Returned to Warehouse")) + labs(title = "Location wise split of Parcels Status", x="Delivery Location")
 
 #Graph 4 : distribution of parcel value by parcel status
-ggplot(pv, aes(y=factor(values, level=c("0-10£", "10-20£", "20-30£", "30-40£", "40-50£", "50-60£", "60-70£", "70-80£", "80-90£", "90-100£", "100-110£", "110-120£", "120-130£", "130-140£", "140-150£", "150-160£", "160£-above")) ,fill=parcel_status)) + geom_bar(position="fill") +theme( axis.title.x  = element_blank()) + scale_fill_manual(values = c("#63c5da","#FFD300","#FF6347", "green"), name="Parcel Status") + labs(title = "Price Distribution of Parcels By Parcel Status", y="Price Of Parcel")
+ggplot(pv, aes(y=factor(values, level=c("0-10Â£", "10-20Â£", "20-30Â£", "30-40Â£", "40-50Â£", "50-60Â£", "60-70Â£", "70-80Â£", "80-90Â£", "90-100Â£", "100-110Â£", "110-120Â£", "120-130Â£", "130-140Â£", "140-150Â£", "150-160Â£", "160Â£-above")) ,fill=parcel_status)) + geom_bar(position="fill") +theme( axis.title.x  = element_blank()) + scale_fill_manual(values = c("#63c5da","#FFD300","#FF6347", "green"), name="Parcel Status") + labs(title = "Price Distribution of Parcels By Parcel Status", y="Price Of Parcel")
 
 #Graph 5: Average Delivery Time According To Location And Priority Status 
 g3 <- ggplot(delivery_time_difference,aes(y =delivery_location,parcel_arrived_day,fill = priority_delivery )) + geom_bar(stat = "identity", position = "dodge") + labs(title = "Average Delivery Time According To Location And Priority Status", x= "Average Delivery Time(in days)", y="Delivery location") +scale_fill_manual(values = c("#63c5da","#FF6347"), name="Priority Status", labels=c("No", "Yes")) + theme(legend.position = "bottom")
@@ -108,14 +108,3 @@ ggplot(pc1, aes(x=parcel_return_case, fill=time_of_delivery)) + geom_bar()  +sca
 
 #Graph : Distribution of parcel returned to warehouse by priority 
 ggplot(pc1, aes(x=experience, fill=driver_dilvery_count)) + geom_bar() + scale_fill_manual(values = c("#FF6347","#63c5da"), name="Priority Delivery", labels=c("No", "Yes")) + labs(title = "Distribution Of Parcel Returned To Warehouse By Priority Delivery", x="Parcel Retuned to Warehouse")
-
-
-#p_d1 <- p_d %>% group_by(experience) %>% summarise(driver_dilvery_count= n())
-#ggplot(p_d1,aes(x =experience,y=driver_dilvery_count )) + geom_segment(aes(x=experience, xend=experience, y=0, yend=driver_dilvery_count))+ geom_point()
-
-#p_d3 <- p_d %>% group_by(experience, van_type) %>% summarise(driver_dilvery_count= n())
-#ggplot(p_d3,aes(x =experience,y=driver_dilvery_count, col=van_type )) + coord_flip() +geom_segment(aes(x=experience, xend=experience, y=0, yend=driver_dilvery_count))+ geom_point() + labs(title="Driver's delivery count according to experience  and work pattern", y="Driver's Delivery Count", x="Experience") +scale_fill_manual(values = c("#63c5da","#FFD300","#FF6347"), name= "Work Pattern")
-
-
-
-#ggplot(,aes(x = work_pattern,y = driver_delivery_count,color = van_type)) + geom_point() + geom_smooth(se = FALSE)
